@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=400">
+  <link rel="stylesheet" href="popup.css">
+  <title>MayWatch</title>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <h1 class="header-title">MayWatch</h1>
+      <label class="toggle">
+        <input type="checkbox" id="globalToggle" checked>
+        <span class="toggle-slider"></span>
+      </label>
+    </header>
+
+    <div class="task-list" id="taskList"></div>
+
+    <div class="collapsible-section" id="feishuSection">
+      <div class="collapsible-header" id="feishuToggleHeader">
+        <span class="collapsible-title">通知设置</span>
+        <span class="collapsible-arrow">▶</span>
+      </div>
+      <div class="collapsible-body">
+        <div class="form-group">
+          <label class="form-label" for="feishuWebhook">飞书 Webhook URL</label>
+          <input type="url" id="feishuWebhook" class="form-input" placeholder="https://open.feishu.cn/open-apis/bot/v2/hook/...">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="feishuSecret">Secret</label>
+          <input type="password" id="feishuSecret" class="form-input" placeholder="签名校验密钥">
+        </div>
+        <div class="feishu-actions">
+          <label class="toggle">
+            <input type="checkbox" id="feishuEnabled">
+            <span class="toggle-slider"></span>
+          </label>
+          <button type="button" class="btn btn-secondary btn-sm" id="testFeishuBtn">测试</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-actions">
+      <button class="btn btn-secondary" id="checkAllBtn">检查全部</button>
+      <button class="btn btn-primary" id="addTaskBtn">+添加监控</button>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+      <h2 class="modal-title" id="modalTitle">添加监控</h2>
+      <form id="taskForm">
+        <input type="hidden" id="taskId">
+        <div class="form-group">
+          <label class="form-label" for="taskUrl">URL</label>
+          <input type="url" id="taskUrl" class="form-input" required placeholder="https://example.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="taskName">名称</label>
+          <input type="text" id="taskName" class="form-input" required placeholder="监控任务名称">
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="taskSelector">选择器</label>
+          <div class="selector-group">
+            <select id="taskSelectorType" class="form-input selector-type">
+              <option value="css">CSS</option>
+              <option value="xpath">XPath</option>
+            </select>
+            <input type="text" id="taskSelector" class="form-input selector-input" placeholder="留空监控整页">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="taskInterval">检查间隔</label>
+          <div class="interval-group">
+            <input type="number" id="taskInterval" class="form-input interval-input" min="1" value="5" required>
+            <select id="taskIntervalUnit" class="form-input interval-unit">
+              <option value="s">秒</option>
+              <option value="m" selected>分钟</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group numeric-section">
+          <div class="numeric-header">
+            <label class="form-label">数值追踪</label>
+            <label class="toggle toggle-sm">
+              <input type="checkbox" id="taskNumericEnabled">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="numeric-fields" id="numericFields">
+            <div class="form-group">
+              <label class="form-label" for="taskNumericMode">模式</label>
+              <select id="taskNumericMode" class="form-input">
+                <option value="auto">auto</option>
+                <option value="template">模板(template)</option>
+                <option value="regex">正则(regex)</option>
+              </select>
+            </div>
+            <div class="form-group" id="numericTemplateGroup">
+              <label class="form-label" for="taskNumericTemplate">模板</label>
+              <select id="taskNumericTemplate" class="form-input">
+                <option value="integer">纯整数</option>
+                <option value="decimal">小数</option>
+                <option value="with-unit">带单位</option>
+                <option value="currency">货币</option>
+              </select>
+            </div>
+            <div class="form-group" id="numericRegexGroup" style="display:none">
+              <label class="form-label" for="taskNumericRegex">正则表达式</label>
+              <input type="text" id="taskNumericRegex" class="form-input" placeholder="例如: (\d+)ms">
+            </div>
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="button" class="btn btn-secondary" id="cancelBtn">取消</button>
+          <button type="submit" class="btn btn-primary">保存</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

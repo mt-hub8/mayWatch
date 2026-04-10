@@ -1,0 +1,139 @@
+<div class="mw-panel-root">
+  <button class="mw-trigger" id="mw-trigger">
+    <svg class="mw-trigger-icon" viewBox="0 0 24 24">
+      <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+    </svg>
+    <span class="mw-badge hidden" id="mw-badge">0</span>
+  </button>
+
+  <div class="mw-panel" id="mw-panel">
+    <div class="mw-resize-handle" id="mw-resize-handle"></div>
+    <div id="mw-list-view">
+      <div class="mw-header">
+        <div class="mw-header-left">
+          <svg class="mw-header-logo" viewBox="0 0 24 24">
+            <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+          </svg>
+          <span class="mw-header-title">MayWatch</span>
+        </div>
+        <div class="mw-header-actions">
+          <div class="mw-view-toggle" id="mw-view-toggle">
+            <button class="mw-view-btn active" data-view="tasks" title="按任务">📋</button>
+            <button class="mw-view-btn" data-view="timeline" title="时间流">🕐</button>
+          </div>
+          <button class="mw-icon-btn" id="mw-refresh" title="立即检查全部">🔄</button>
+          <button class="mw-icon-btn" id="mw-close" title="收起">✕</button>
+        </div>
+      </div>
+      <div class="mw-body" id="mw-body"></div>
+      <div class="mw-footer">
+        <span class="mw-footer-info" id="mw-footer-info"></span>
+        <div class="mw-footer-actions">
+          <button class="mw-link" id="mw-mark-all-read">全部已读</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="mw-detail-view" style="display:none;">
+      <div class="mw-detail">
+        <div class="mw-detail-header">
+          <button class="mw-back-btn" id="mw-back">← 返回</button>
+          <span class="mw-detail-title" id="mw-detail-title"></span>
+        </div>
+        <div class="mw-detail-meta" id="mw-detail-meta"></div>
+        <div class="mw-chart-container hidden" id="mw-chart-container">
+          <canvas id="mw-trend-chart"></canvas>
+        </div>
+        <div class="mw-tabs">
+          <button class="mw-tab active" data-tab="summary">摘要</button>
+          <button class="mw-tab" data-tab="compare">对比</button>
+          <button class="mw-tab" data-tab="raw">原始 diff</button>
+        </div>
+        <div class="mw-diff-content" id="mw-diff-content"></div>
+        <div class="mw-diff-footer">
+          <div class="mw-diff-stats" id="mw-diff-stats"></div>
+          <button class="mw-copy-btn" id="mw-copy-diff">复制 Diff</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="mw-add-view" style="display:none;">
+      <div class="mw-detail">
+        <div class="mw-detail-header">
+          <button class="mw-back-btn" id="mw-add-back">← 取消</button>
+          <span class="mw-detail-title">快速添加监控</span>
+        </div>
+        <div class="mw-add-form">
+          <div class="mw-form-group">
+            <label class="mw-form-label">页面 URL</label>
+            <input type="url" class="mw-form-input" id="mw-add-url" placeholder="https://...">
+          </div>
+          <div class="mw-form-group">
+            <label class="mw-form-label">任务名称</label>
+            <input type="text" class="mw-form-input" id="mw-add-name" placeholder="输入名称">
+          </div>
+          <div class="mw-form-group">
+            <label class="mw-form-label">选择器类型</label>
+            <div class="mw-form-row">
+              <select class="mw-form-select" id="mw-add-selector-type">
+                <option value="xpath">XPath</option>
+                <option value="css">CSS</option>
+              </select>
+            </div>
+          </div>
+          <div class="mw-form-group">
+            <label class="mw-form-label">选择器</label>
+            <input type="text" class="mw-form-input" id="mw-add-selector" placeholder="留空监控全页">
+          </div>
+          <div class="mw-form-group">
+            <label class="mw-form-label">匹配预览</label>
+            <div class="mw-preview-text" id="mw-add-preview">—</div>
+          </div>
+          <div class="mw-form-group">
+            <label class="mw-form-label">检查间隔</label>
+            <div class="mw-form-row">
+              <input type="number" class="mw-form-input mw-form-input-sm" id="mw-add-interval" value="5" min="1">
+              <select class="mw-form-select" id="mw-add-interval-unit">
+                <option value="s">秒</option>
+                <option value="m">分钟</option>
+              </select>
+            </div>
+          </div>
+          <div class="mw-numeric-section">
+            <div class="mw-numeric-header">
+              <label>数值追踪</label>
+              <button class="mw-toggle-sm" id="mw-add-numeric-toggle" type="button"></button>
+            </div>
+            <div class="mw-numeric-fields" id="mw-add-numeric-fields">
+              <div class="mw-form-group">
+                <label class="mw-form-label">模式</label>
+                <select class="mw-form-select" id="mw-add-numeric-mode" style="width:100%">
+                  <option value="auto">自动检测</option>
+                  <option value="template">预置模板</option>
+                  <option value="regex">自定义正则</option>
+                </select>
+              </div>
+              <div class="mw-form-group" id="mw-add-template-group">
+                <label class="mw-form-label">模板</label>
+                <select class="mw-form-select" id="mw-add-numeric-template" style="width:100%">
+                  <option value="integer">纯整数 (123)</option>
+                  <option value="decimal">小数 (12.5)</option>
+                  <option value="with-unit" selected>带单位 (11812ms, 89%)</option>
+                  <option value="currency">货币 (¥89.9)</option>
+                </select>
+              </div>
+              <div class="mw-form-group" id="mw-add-regex-group" style="display:none">
+                <label class="mw-form-label">正则表达式</label>
+                <input type="text" class="mw-form-input" id="mw-add-numeric-regex" placeholder="例如: (\d+)ms">
+              </div>
+            </div>
+          </div>
+          <div class="mw-form-actions">
+            <button class="mw-btn mw-btn-primary" id="mw-add-confirm">确认添加</button>
+            <button class="mw-btn mw-btn-ghost" id="mw-add-cancel">取消</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
